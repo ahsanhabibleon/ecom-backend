@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const PaymentModel = new mongoose.Schema(
     {
+        id: { type: String, required: true },
         name: { type: String, required: true },
         phone: { type: String, required: true },
         email: { type: String, required: false },
