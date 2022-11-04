@@ -12,31 +12,6 @@ const stripe = new Stripe('sk_test_51K57zmEftUPQhn8n7H2S9mfD1rc9A8NGyrA1tvtHMihI
 
 const paymentRoutes = express.Router();
 
-// This is your test secret API key.
-
-// const YOUR_DOMAIN = 'http://localhost:4040';
-
-// paymentRoutes.post('/', async (req, res) => {
-//     const session = await stripe.checkout.sessions.create({
-//         line_items: [{
-//             price_data: {
-//                 currency: 'usd',
-//                 product_data: {
-//                     name: 'T-shirt',
-//                 },
-//                 unit_amount: 50000,
-//             },
-//             quantity: 1,
-//         }],
-//         mode: 'payment',
-//         success_url: `${YOUR_DOMAIN}?success=true`,
-//         cancel_url: `${YOUR_DOMAIN}?canceled=true`,
-//     });
-//     console.log({ session })
-//     res.redirect(303, 'http://www.youtube.com/results?search_query=live+coding+interview+react');
-// });
-
-
 paymentRoutes.post('/', async (req, res) => {
     console.log({ body: req.body.order.shippingAddress })
     const newPayment = new Payment({
@@ -52,8 +27,6 @@ paymentRoutes.post('/', async (req, res) => {
     const payment = await newPayment.save();
 
     // Create a PaymentIntent with the order amount and currency
-
-    console.log({ payment })
 
     await stripe.paymentIntents.create({
         amount: 5000,
