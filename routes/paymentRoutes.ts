@@ -1,7 +1,6 @@
 import express from 'express';
 // import expressAsyncHandler from 'express-async-handler';
 import Payment from '../models/paymentModel';
-import uuid from 'uuid'
 
 import Stripe from 'stripe';
 const stripe = new Stripe('sk_test_51K57zmEftUPQhn8n7H2S9mfD1rc9A8NGyrA1tvtHMihIT3VDIW25JrwgIngEUd5rDgRPXyXOO3a2lL30u08FQleL00Ftm6ZH8e', {

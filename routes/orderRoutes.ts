@@ -33,5 +33,10 @@ orderRoutes.get('/:id', isAuth, expressAsyncHandler(async (req, res) => {
     }
 }))
 
+orderRoutes.get('/', async (req, res) => {
+    const orders = await Order.find()
+    res.send(orders)
+})
+
 
 export default orderRoutes

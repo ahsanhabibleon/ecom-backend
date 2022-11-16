@@ -8,7 +8,6 @@ const userRouter = express.Router();
 
 userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email })
-    console.log({ user })
 
     if (user) {
         if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -26,23 +25,28 @@ userRouter.post('/signin', expressAsyncHandler(async (req, res) => {
 }))
 
 userRouter.post('/signup', expressAsyncHandler(async (req, res) => {
-    const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password)
-    })
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+        res.status(500).send({ message: "User already exists for this email address!" })
+    } else {
+        const newUser = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password)
+        })
 
-    const user = await newUser.save();
-    try {
-        res.send({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            token: generateToken(user)
-        });
-    } catch (error) {
-        res.status(500).send({ message: "Something went wrong!" })
+        const user = await newUser.save();
+        try {
+            res.send({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                token: generateToken(user)
+            });
+        } catch (error) {
+            res.status(500).send({ message: "Something went wrong!" })
+        }
     }
 }))
 
